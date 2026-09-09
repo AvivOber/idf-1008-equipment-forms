@@ -69,6 +69,20 @@ button:hover {
   margin-bottom: 0;
 }
 
+.names-list {
+  text-align: right;
+  font-size: 14px;
+  color: #444;
+  max-height: 220px;
+  overflow-y: auto;
+  margin: 8px 0 0;
+  padding-inline-start: 20px;
+}
+
+a {
+  color: #2563eb;
+}
+
 .flash {
   background: #fee2e2;
   color: #991b1b;
