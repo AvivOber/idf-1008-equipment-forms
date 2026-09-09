@@ -20,15 +20,12 @@
     {% endwith %}
 
     <form method="POST" action="{{ url_for('generate') }}">
-      <label for="full_name">שם מלא</label>
-      <input list="names" id="full_name" name="full_name" placeholder="לדוגמה: אביב אוברגוט" required autocomplete="off">
-      <datalist id="names">
-        {% for n in names %}<option value="{{ n }}">{% endfor %}
-      </datalist>
+      <label for="personal_number">מספר אישי (מ.א.)</label>
+      <input type="text" inputmode="numeric" pattern="[0-9]*" id="personal_number" name="personal_number" placeholder="לדוגמה: 7725557" required autocomplete="off">
       <button type="submit">קבל טופס חתום</button>
     </form>
 
-    <p class="hint">מ.א. ודרגה יימולאו אוטומטית מרשימת החטיבה. הטופס נוצר ומורד מיידית.</p>
+    <p class="hint">שם, דרגה ומ.א. יימולאו אוטומטית מרשימת החטיבה. הטופס נוצר ומורד מיידית.</p>
   </div>
 </body>
 </html>

@@ -56,12 +56,14 @@ def load_roster():
     return _normalize(df)
 
 
-def find_soldier(full_name):
-    """Look up a soldier by exact full-name match. Returns a dict or None."""
+def find_soldier_by_personal_number(personal_number):
+    """Look up a soldier by personal number (מ.א.) - the unique key, unlike
+    full name, which more than one soldier can share. Returns a dict or None."""
     df = load_roster()
     if df.empty:
         return None
-    match = df[df["full_name"] == full_name.strip()]
+    pn = str(personal_number).strip()
+    match = df[df["personal_number"] == pn]
     if match.empty:
         return None
     row = match.iloc[0]

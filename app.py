@@ -1,7 +1,8 @@
 """
-Small self-service web page: a soldier types their name, the app looks them
-up in the roster (name -> personal number + rank) and immediately returns
-their filled-in, signed Form 1008 as a PDF download.
+Small self-service web page: a soldier enters their personal number (מ.א.),
+the app looks them up in the roster (personal number -> name + rank, since
+full name isn't a safe lookup key - more than one soldier can share one)
+and immediately returns their filled-in, signed Form 1008 as a PDF download.
 
 Also serves /admin: a password-protected page to upload/replace the roster
 file from a browser (no terminal/Python needed) - the roster is gitignored
@@ -23,19 +24,19 @@ ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "changeme")
 
 @app.route("/")
 def index():
-    return render_template("index.html", names=roster.all_names())
+    return render_template("index.html")
 
 
 @app.route("/generate", methods=["POST"])
 def generate():
-    full_name = request.form.get("full_name", "").strip()
-    if not full_name:
-        flash("נא להזין שם מלא")
+    personal_number = request.form.get("personal_number", "").strip()
+    if not personal_number:
+        flash("נא להזין מספר אישי")
         return redirect(url_for("index"))
 
-    soldier = roster.find_soldier(full_name)
+    soldier = roster.find_soldier_by_personal_number(personal_number)
     if not soldier:
-        flash(f'לא נמצא חייל בשם "{full_name}" ברשימת החטיבה. פנה/י ל{config.ISSUER["first_name"]} {config.ISSUER["last_name"]}.')
+        flash(f'לא נמצא חייל עם מספר אישי "{personal_number}" ברשימת החטיבה. פנה/י ל{config.ISSUER["first_name"]} {config.ISSUER["last_name"]}.')
         return redirect(url_for("index"))
 
     try:
