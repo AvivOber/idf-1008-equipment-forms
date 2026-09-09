@@ -22,10 +22,10 @@ OUTPUT_DIR = os.path.join(BASE_DIR, "output")
 PAGE_WIDTH = 595
 PAGE_HEIGHT = 842
 
-# Fixed issuer (מנפק) identity - Arik Bord, Battalion 429
+# Fixed issuer (מנפק) identity - Arik Brod, Battalion 429
 ISSUER = {
     "first_name": "אריק",
-    "last_name": "בורד",
+    "last_name": "ברוד",
     "rank": "סרן",
     "personal_number": "8087810",
 }
