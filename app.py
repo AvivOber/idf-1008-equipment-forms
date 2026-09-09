@@ -36,7 +36,7 @@ def generate():
 
     soldier = roster.find_soldier_by_personal_number(personal_number)
     if not soldier:
-        flash(f'לא נמצא חייל עם מספר אישי "{personal_number}" ברשימת החטיבה. פנה/י ל{config.ISSUER["first_name"]} {config.ISSUER["last_name"]}.')
+        flash(f'לא נמצא חייל עם מספר אישי ({personal_number}) בגדוד 429, פנה/י ל{config.ISSUER["first_name"]} {config.ISSUER["last_name"]}.')
         return redirect(url_for("index"))
 
     try:
