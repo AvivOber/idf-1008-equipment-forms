@@ -9,7 +9,7 @@ import pandas as pd
 
 import config
 
-_NAME_COLS = ["full_name", "name", "שם", "שם מלא"]
+_NAME_COLS = ["full_name", "name", "שם", "שם מלא", "שם ומשפחה"]
 _PN_COLS = ["personal_number", "personal number", "מספר אישי", "מ.א.", "מא"]
 _RANK_COLS = ["rank", "דרגה"]
 
@@ -33,12 +33,15 @@ def _normalize(df):
         )
     out = df[[name_col, pn_col, rank_col]].copy()
     out.columns = ["full_name", "personal_number", "rank"]
+    # Drop blank rows (common in hand-maintained sheets) before any string
+    # coercion - astype(str) on a NaN cell doesn't reliably yield "nan".
+    out = out.dropna(subset=["full_name"])
+    out = out[out["full_name"].astype(str).str.strip() != ""]
     out["full_name"] = out["full_name"].astype(str).str.strip()
     out["personal_number"] = (
         out["personal_number"].astype(str).str.replace(r"\.0$", "", regex=True).str.strip()
     )
     out["rank"] = out["rank"].astype(str).str.strip()
-    out = out[(out["full_name"] != "") & (out["full_name"].str.lower() != "nan")]
     return out.reset_index(drop=True)
 
 
