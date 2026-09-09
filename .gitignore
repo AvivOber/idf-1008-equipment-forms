@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+venv/
+.venv/
+output/*.pdf
+data/roster.xlsx
+data/roster.csv
+.DS_Store

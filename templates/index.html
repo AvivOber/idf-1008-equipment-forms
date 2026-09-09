@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>טופס 1008 - גדוד 429</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="card">
+    <h1>טופס 1008 פלס"מ - גדוד 429</h1>
+    <p class="subtitle">קסדה + שכפ"ץ יומי</p>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">
+          {% for m in messages %}<p>{{ m }}</p>{% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('generate') }}">
+      <label for="full_name">שם מלא</label>
+      <input list="names" id="full_name" name="full_name" placeholder="לדוגמה: אביב אוברגוט" required autocomplete="off">
+      <datalist id="names">
+        {% for n in names %}<option value="{{ n }}">{% endfor %}
+      </datalist>
+      <button type="submit">קבל טופס חתום</button>
+    </form>
+
+    <p class="hint">מ.א. ודרגה יימולאו אוטומטית מרשימת החטיבה. הטופס נוצר ומורד מיידית.</p>
+  </div>
+</body>
+</html>
