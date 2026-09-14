@@ -58,10 +58,19 @@ def _fit_font_size(c, font_name, text, max_width, base_size, min_size=5.5):
     return size
 
 
-def _draw_overlay(buf, full_name, personal_number, rank, issue_date=None):
+def valid_equipment_keys(selected_items):
+    """Filter a list of item keys down to ones that actually exist in
+    config.EQUIPMENT_ITEMS, silently dropping anything unrecognized
+    (e.g. a tampered form submission)."""
+    known = {key for key, _label, _y in config.EQUIPMENT_ITEMS}
+    return [k for k in selected_items if k in known]
+
+
+def _draw_overlay(buf, full_name, personal_number, rank, issue_date=None, equipment=None):
     _register_fonts()
     issue_date = issue_date or date.today().strftime("%d.%m.%Y")
     first_name, last_name = split_full_name(full_name)
+    equipment = set(valid_equipment_keys(equipment if equipment is not None else config.DEFAULT_EQUIPMENT))
 
     c = canvas.Canvas(buf, pagesize=(config.PAGE_WIDTH, config.PAGE_HEIGHT))
     C = config.COORDS
@@ -102,18 +111,22 @@ def _draw_overlay(buf, full_name, personal_number, rank, issue_date=None):
     hebrew("receiver_signature", full_name.strip(), size=12, bold=True)
     number("receiver_date", issue_date)
 
-    # Checkmarks - helmet + vest are the only items reissued/confirmed per form.
+    # Checkmarks in the "נמצא" column for whichever equipment was selected.
     # Uses Helvetica (not the Hebrew font, which has no Latin glyphs).
     c.setFont("Helvetica-Bold", 13)
-    for key in ("helmet_check", "vest_check"):
-        x, y = C[key]
-        c.drawCentredString(x, y, "V")
+    for key, _label, y in config.EQUIPMENT_ITEMS:
+        if key in equipment:
+            c.drawCentredString(config.EQUIPMENT_CHECK_X, y, "V")
 
     c.save()
 
 
-def generate_form(full_name, personal_number, rank, issue_date=None, output_path=None):
+def generate_form(full_name, personal_number, rank, issue_date=None, output_path=None, equipment=None):
     """Generate a single signed Form 1008 PDF for one soldier.
+
+    `equipment` is a list of config.EQUIPMENT_ITEMS keys to check off in the
+    נמצא column; defaults to config.DEFAULT_EQUIPMENT (helmet + vest) if
+    not given.
 
     Returns the bytes of the generated PDF, and writes it to output_path if given.
     """
@@ -122,7 +135,7 @@ def generate_form(full_name, personal_number, rank, issue_date=None, output_path
         raise ValueError("; ".join(errors))
 
     overlay_buf = io.BytesIO()
-    _draw_overlay(overlay_buf, full_name, personal_number, rank, issue_date)
+    _draw_overlay(overlay_buf, full_name, personal_number, rank, issue_date, equipment)
     overlay_buf.seek(0)
 
     overlay_reader = PdfReader(overlay_buf)

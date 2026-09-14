@@ -36,7 +36,7 @@ label {
   margin-bottom: 6px;
 }
 
-input {
+input:not([type="checkbox"]) {
   width: 100%;
   box-sizing: border-box;
   padding: 10px 12px;
@@ -44,6 +44,42 @@ input {
   border: 1px solid #ccc;
   border-radius: 8px;
   margin-bottom: 16px;
+}
+
+.equipment-label {
+  margin-top: 4px;
+}
+
+.equipment-list {
+  text-align: right;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 4px 12px;
+  margin-bottom: 16px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.equipment-item {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  font-weight: normal;
+  padding: 8px 0;
+  border-bottom: 1px solid #f2f3f5;
+  margin-bottom: 0;
+}
+
+.equipment-item:last-child {
+  border-bottom: none;
+}
+
+.equipment-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
 
 button {

@@ -24,7 +24,11 @@ ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "changeme")
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template(
+        "index.html",
+        equipment_items=config.EQUIPMENT_ITEMS,
+        default_equipment=set(config.DEFAULT_EQUIPMENT),
+    )
 
 
 @app.route("/generate", methods=["POST"])
@@ -39,9 +43,11 @@ def generate():
         flash(f'לא נמצא חייל עם מספר אישי ({personal_number}) בגדוד 429, פנה/י ל{config.ISSUER["first_name"]} {config.ISSUER["last_name"]}.')
         return redirect(url_for("index"))
 
+    equipment = request.form.getlist("equipment")
+
     try:
         pdf_bytes = generator.generate_form(
-            soldier["full_name"], soldier["personal_number"], soldier["rank"]
+            soldier["full_name"], soldier["personal_number"], soldier["rank"], equipment=equipment
         )
     except ValueError as e:
         flash(f"שגיאה ביצירת הטופס: {e}")

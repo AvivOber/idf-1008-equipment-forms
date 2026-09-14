@@ -55,7 +55,30 @@ COORDS = {
     "issuer_date": (354, 152, 52),
     "receiver_signature": (195, 151, 46),
     "receiver_date": (98, 151, 54),
-    # Checkmarks in the "נמצא" column, for the two daily-issue rows
-    "helmet_check": (288, 366),
-    "vest_check": (288, 334),
 }
+
+# The equipment table's "נמצא" column: one V per selected item, in the
+# row's vertical center. x is the same for every row (288pt, the column's
+# measured center). y for "helmet" (366) and "vest" (334) were measured
+# directly off the scan; every other row is exactly 32pt apart (confirmed
+# against the template's row grid), so the rest are derived from those two
+# rather than re-measured individually. Order matches the printed table,
+# top to bottom.
+EQUIPMENT_CHECK_X = 288
+EQUIPMENT_ITEMS = [
+    ("work_shirt", "חולצת עבודה", 622),
+    ("work_pants", "מכנס עבודה", 590),
+    ("sleeping_bag", "שק שינה", 558),
+    ("combat_vest", "אפוד קרב", 526),
+    ("cat_tourniquet", "חוסם עורקים CAT", 494),
+    ("weapon_sling", "רצועה לנשק", 462),
+    ("magazine", "מחסנית", 430),
+    ("personal_bandage", "תחבושת אישית", 398),
+    ("helmet", "קסדה", 366),
+    ("vest", "שכפ\"ץ", 334),
+    ("dress_shirt", "חולצת סערה", 302),
+    ("dress_pants", "מכנס סערה", 270),
+    ("work_belt", "חגורת עבודה", 238),
+    ("work_cap", "כובע עבודה", 206),
+]
+DEFAULT_EQUIPMENT = ["helmet", "vest"]

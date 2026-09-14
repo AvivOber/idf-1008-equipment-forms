@@ -9,7 +9,7 @@
 <body>
   <div class="card">
     <h1>טופס 1008 פלס"מ - גדוד 429</h1>
-    <p class="subtitle">קסדה + שכפ"ץ יומי</p>
+    <p class="subtitle">בחר/י את הציוד שנלקח</p>
 
     {% with messages = get_flashed_messages() %}
       {% if messages %}
@@ -22,6 +22,17 @@
     <form method="POST" action="{{ url_for('generate') }}">
       <label for="personal_number">מספר אישי (מ.א.)</label>
       <input type="text" inputmode="numeric" pattern="[0-9]*" id="personal_number" name="personal_number" placeholder="לדוגמה: 1234567" required autocomplete="off">
+
+      <label class="equipment-label">ציוד</label>
+      <div class="equipment-list">
+        {% for key, item_label, _y in equipment_items %}
+          <label class="equipment-item">
+            <input type="checkbox" name="equipment" value="{{ key }}" {% if key in default_equipment %}checked{% endif %}>
+            {{ item_label }}
+          </label>
+        {% endfor %}
+      </div>
+
       <button type="submit">קבל טופס חתום</button>
     </form>
 
